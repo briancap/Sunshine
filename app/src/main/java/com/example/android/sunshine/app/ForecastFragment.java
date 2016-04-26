@@ -1,8 +1,10 @@
 package com.example.android.sunshine.app;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -26,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import android.support.v4.app.Fragment;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +78,21 @@ public class ForecastFragment extends Fragment{
 
         ListView list = (ListView) rootView.findViewById(R.id.listview_forecast);
         list.setAdapter(mForecastAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Context context = getActivity();
+                CharSequence text = null;
+                int duration = Toast.LENGTH_SHORT;
+
+                TextView tv = (TextView) adapterView.getChildAt(i);
+                text = tv.getText().toString();
+
+                Toast toast = new Toast(getActivity());
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
 
         return rootView;
     }
