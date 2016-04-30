@@ -2,9 +2,12 @@ package com.example.android.sunshine.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.Log;
@@ -40,10 +43,12 @@ import org.json.JSONObject;
 /**
  * Created by brian on 4/9/16.
  */
-public class ForecastFragment extends Fragment{
+public class ForecastFragment extends Fragment {
     ArrayAdapter<String> mForecastAdapter;
+    String LOG_TAG = "*******LOG TAG********";
 
     public ForecastFragment() {
+        Log.v(LOG_TAG, "helloasjkdhflkajsn");
     }
 
     @Override
@@ -57,7 +62,6 @@ public class ForecastFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
 
        String[] forecastArray = {
                 "Today - Sunny - 88/63",
@@ -114,21 +118,18 @@ public class ForecastFragment extends Fragment{
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("53717");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String zip = prefs.getString(getString(R.string.pref_location_key)
+                    , getString(R.string.pref_location_default));
+            weatherTask.execute(zip);
             return true;
         }
-//        if (id == R.id.action_settings) {
-//            Intent intent = new Intent(getActivity(), SettingsActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-
 
         return super.onOptionsItemSelected(item);
     }
 
+
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
-        String LOG_TAG = "*******LOG TAG********";
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -339,9 +340,10 @@ public class ForecastFragment extends Fragment{
                     resultStrs[i] = day + " - " + description + " - " + highAndLow;
                 }
 
-                for (String s : resultStrs) {
-                    Log.v(LOG_TAG, "Forecast entry: " + s);
-                }
+//                for (String s : resultStrs) {
+//                    Log.v(LOG_TAG, "Forecast entry: " + s);
+//                }
+
                 return resultStrs;
 
             }
