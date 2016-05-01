@@ -48,7 +48,6 @@ public class ForecastFragment extends Fragment {
     String LOG_TAG = "*******LOG TAG********";
 
     public ForecastFragment() {
-        Log.v(LOG_TAG, "helloasjkdhflkajsn");
     }
 
     @Override
@@ -63,23 +62,11 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-       String[] forecastArray = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/40",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Asteroids - 75/65",
-                "Fri - Heavy Rain - 65/56",
-                "Sat - HELP TRAPPED IN WEATHERSTATION - 60/51",
-                "Sun - SUNNY - 80/68"
-        };
-
-        List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastArray));
-
         mForecastAdapter = new ArrayAdapter<>(
                 getActivity()
                 , R.layout.list_item_forecast
                 , R.id.list_item_forecast_textview
-                , weekForecast);
+                , new ArrayList<String>());
 
         ListView list = (ListView) rootView.findViewById(R.id.listview_forecast);
         list.setAdapter(mForecastAdapter);
@@ -117,15 +104,25 @@ public class ForecastFragment extends Fragment {
         //handle action bar clicks
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String zip = prefs.getString(getString(R.string.pref_location_key)
-                    , getString(R.string.pref_location_default));
-            weatherTask.execute(zip);
+            updateWeather();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateWeather(){
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String zip = prefs.getString(getString(R.string.pref_location_key)
+                , getString(R.string.pref_location_default));
+        weatherTask.execute(zip);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
     }
 
 
