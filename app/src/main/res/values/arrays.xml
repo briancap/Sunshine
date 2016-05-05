@@ -5,9 +5,9 @@
         <item>@string/pref_unit_label_imperial</item>
     </string-array>
 
-    <string name="pref_unit_values">
+    <string-array name="pref_unit_values">
         <item>@string/pref_unit_label_metric</item>
         <item>@string/pref_unit_label_imperial</item>
-    </string>
+    </string-array>
 
 </resources>

@@ -12,8 +12,8 @@
         android:title="@string/pref_unit_label"
         android:key="@string/pref_unit_key"
         android:defaultValue="@string/pref_unit_default"
-        android:entryValues=""
-        android:entries=""
+        android:entryValues="@array/pref_unit_values"
+        android:entries="@array/pref_unit_options"
         />
 
 </PreferenceScreen>
